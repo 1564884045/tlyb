@@ -1,0 +1,76 @@
+// {
+// 	"folders": [
+// 		{
+// 			"path": "E:\\iwiteks_taoke_organization_admin_web"
+// 		}
+// 	],
+// 	"settings": {}
+// }
+{
+	    "dart.checkForSdkUpdates": false,
+	    "dart.flutterCreateAndroidLanguage": "java",
+	    "dart.flutterCreateIOSLanguage": "objc",
+	    "editor.fontSize": 16,
+	    "todo-tree.highlights.enabled": false,
+	    "workbench.startupEditor": "newUntitledFile",
+	    "todo-tree.tree.showScanModeButton": false,
+	    "emmet.includeLanguages": {
+	      "wxml": "html"
+	    },
+	    // 选中高亮的颜色
+	    "workbench.colorCustomizations": {
+	        "editor.selectionBackground": "#ac82a87e"
+	    },
+	    "minapp-vscode.disableAutoConfig": true,
+	    "fileheader.customMade": {
+	      "Author": "hetao",
+	      "name": "文件名",
+	      "Description": "描述",
+	      "Date": "Do not edit",
+	      "LastEditors": "xukai",
+	      "LastEditTime": "Do not edit"
+	    },
+	    "[javascript]": {
+	      "editor.defaultFormatter": "esbenp.prettier-vscode"
+	    },
+	    "[json]": {
+	      "editor.defaultFormatter": "vscode.json-language-features"
+	    },
+	    "editor.suggestSelection": "first",
+	    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+	    "java.semanticHighlighting.enabled": true,
+	    "files.exclude": {
+	      "**/.classpath": true,
+	      "**/.project": true,
+	      "**/.settings": true,
+	      "**/.factorypath": true
+	    },
+	    "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx1G -Xms100m -javaagent:\"/Users/xukai/.vscode/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
+	    // tab 大小为2个空格
+	    "editor.tabSize": 2,
+	    // // 保存时格式化
+	    "editor.formatOnSave": false,
+	    // // 开启 vscode 文件路径导航
+	    "breadcrumbs.enabled": true,
+	    //  显示 markdown 中英文切换时产生的特殊字符
+	    "editor.renderControlCharacters": true,
+	    // eslint 检测文件类型
+	    "vetur.format.defaultFormatter.html": "prettyhtml",
+	    "vetur.format.defaultFormatterOptions": {
+	      "js-beautify-html": {
+	        "wrap_attributes": "auto"
+	      },
+	      "prettyhtml": {
+	        "printWidth": 200,
+	        "singleQuote": false,
+	        "wrapAttributes": false,
+	        "sortAttributes": false
+	      },
+},
+"folders": [
+	{
+		"path": "..\\..\\.."
+	}
+],
+"settings": {}
+}

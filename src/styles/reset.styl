@@ -1,0 +1,137 @@
+
+.scrollbar-wrapper
+  overflow-x hidden
+
+// 分割线样式
+.lineWrapper {
+  margin 15px 0px
+  width 100%
+  height 2px
+  border-bottom-style solid
+  border-width 1px
+  border-color #dedede
+}
+// 详情页布局
+.detail {
+  display: flex;
+  justify-content: center;
+
+  .detail-body {
+    min-width: 900px;
+    max-width: 1200px;
+    width: 90%;
+
+    .common-card {
+      margin-top: 12px;
+      background-color: #fff;
+      padding: 12px;
+
+      .common-title {
+        margin: 12px 0px;
+        display: flex;
+        justify-content: space-between;
+
+        .common-title-text {
+          padding-left: 5px;
+          border-left-style: solid;
+          border-width: 2px;
+          border-color: #357BC3;
+        }
+      }
+    }
+  }
+}
+
+// 编辑页布局
+.edit {
+  display: flex;
+  justify-content: center;
+
+  .edit-body {
+    min-width: 900px;
+    max-width: 1200px;
+    width: 90%;
+    
+    .common-card {
+      margin-top: 12px;
+      background-color: #fff;
+      padding: 15px;
+
+      .common-title {
+        margin: 12px 0px;
+        display: flex;
+        justify-content: space-between;
+
+        .common-title-text {
+          padding-left: 5px;
+          border-left-style: solid;
+          border-width: 2px;
+          border-color: #357BC3;
+        }
+      }
+    }
+  }
+}
+
+// table
+.has-gutter tr {
+  background #ddd !important
+  color #333
+  height 42px
+  font-size 12px
+}
+
+.el-table td, .el-table th.is-leaf {
+  height 42px
+  color #333
+  font-size 12px
+  padding 6px 0
+}
+
+.el-table th {
+  background #ebeff3
+}
+// tabs样式
+.el-tabs__item:focus.is-active.is-focus:not(:active)
+    box-shadow none !important
+.el-tabs__header
+  padding 0 16px 8px 16px
+  background #ffffff
+  margin 0 0 10px
+.el-tabs--border-card
+  &>.el-tabs__header
+    padding 0
+
+// 自定义switch样式
+.el-switch-cutomer
+  height 24px
+  line-height 24px
+  .el-switch__core
+    height 24px
+    line-height 24px
+    border-radius 14px
+    font-size 10px
+.el-switch-cutomer .el-switch__core:after
+  height 20px
+  width 20px
+.el-switch-cutomer.is-checked .el-switch__core::after
+  margin-left -21px
+.el-switch-cutomer .el-switch__core:before
+  display block
+  content '已禁用'
+  text-align right
+  padding-left 0
+  padding-right 6px
+  color #646464
+.el-switch-cutomer.is-checked .el-switch__core:before
+  content '已启用'
+  text-align left
+  padding-left 6px
+  padding-right 0
+  color #fff
+
+// iconfont
+.iconfont
+  font-size unset
+.el-button .iconfont+span
+  margin-left 5px

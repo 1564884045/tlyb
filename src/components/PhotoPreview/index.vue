@@ -1,0 +1,220 @@
+<template>
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+  <div class="pswp vux-previewer" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+      <!-- Container that holds slides.
+        PhotoSwipe keeps only 3 of them in the DOM to save memory.
+        Don't modify these 3 pswp__item elements, data is added later on. -->
+      <div class="pswp__container">
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+        <div class="pswp__item"></div>
+      </div>
+      <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+      <div class="pswp__ui pswp__ui--hidden">
+        <div class="pswp__top-bar">
+          <!--  Controls are self-explanatory. Order can be changed. -->
+          <div class="pswp__counter"></div>
+          <slot name="button-after"></slot>
+          <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+          <button class="pswp__button pswp__button--share" title="Share"></button>
+          <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+          <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+          <slot name="button-before"></slot>
+          <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+          <!-- element will get class pswp__preloader--active when preloader is running -->
+          <div class="pswp__preloader">
+            <div class="pswp__preloader__icn">
+              <div class="pswp__preloader__cut">
+                <div class="pswp__preloader__donut"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+          <div class="pswp__share-tooltip"></div>
+        </div>
+        <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+        <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+        <div class="pswp__caption">
+          <div class="pswp__caption__center"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import PhotoSwipe from 'photoswipe/dist/photoswipe'
+import PhotoSwipeUI from 'photoswipe/dist/photoswipe-ui-default'
+
+export default {
+  name: 'PhotoPreviewer',
+  props: {
+    /**
+     * 图片列表
+     * 不传入宽高，会自适应
+     * 数据格式：
+     * [{
+     *    src: 'https://placekitten.com/800/400',
+     *    title: 'xxxx' // 下面显示的字
+     *  },
+     *   {
+     *     src: 'https://placekitten.com/1200/900',
+     *     msrc: 'https://placekitten.com/120/90', // 缩略图
+     *     w: 1200,
+     *     h: 900
+     *   }]
+     */
+    list: {
+      type: Array,
+      required: true
+    },
+    /**
+     * 参数
+     * http://photoswipe.com/documentation/options.html
+     */
+    options: {
+      type: Object,
+      default () {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      showing: false
+    }
+  },
+  computed: {
+    imgs () {
+      return this.list.map(one => {
+        if (!one.msrc) {
+          one.msrc = one.src
+        }
+        if (typeof one.w === 'undefined') {
+          one.w = 0
+          one.h = 0
+        }
+        return one
+      })
+    }
+  },
+  methods: {
+    init (index) {
+      if (this.showing) {
+        return
+      }
+      this.showing = true
+      const self = this
+      const showItem = this.imgs[index]
+      if (showItem.src && (!showItem.w || !showItem.h || showItem.w < 5 || showItem.h < 5)) {
+        const img = new Image()
+        img.onload = function () {
+          showItem.w = this.width
+          showItem.h = this.height
+          self.doInit(index)
+        }
+        img.src = showItem.src
+      } else {
+        this.doInit(index)
+      }
+    },
+    doInit (index) {
+      const self = this
+      let options = Object.assign({
+        history: false,
+        shareEl: false,
+        tapToClose: true,
+        index: index,
+        bgOpacity: 0.62,
+        closeOnScroll: false
+      }, this.options)
+      this.photoswipe = new PhotoSwipe(this.$el, PhotoSwipeUI, this.imgs, options)
+      this.photoswipe.listen('gettingData', function (index, item) {
+        if (item.src && (!item.w || !item.h || item.w < 1 || item.h < 1)) {
+          const img = new Image()
+          img.onload = function () {
+            item.w = this.width
+            item.h = this.height
+            self.photoswipe.updateSize(true)
+          }
+          img.src = item.src
+        }
+      })
+      this.photoswipe.init()
+      this.photoswipe.listen('close', () => {
+        this.showing = false
+        this.$emit('on-close')
+      })
+      this.photoswipe.listen('afterChange', (a, b) => {
+        this.$emit('on-index-change', {
+          currentIndex: this.photoswipe.getCurrentIndex()
+        })
+      })
+    },
+    show (index = 0) {
+      this.$nextTick(() => {
+        this.init(index)
+      })
+    },
+    getCurrentIndex () {
+      return this.photoswipe.getCurrentIndex()
+    },
+    close () {
+      this.photoswipe.close()
+    },
+    goTo (index) {
+      this.photoswipe.goTo(index)
+    },
+    prev () {
+      this.photoswipe.prev()
+    },
+    next () {
+      this.photoswipe.next()
+    }
+  },
+  watch: {
+    imgs (newVal, oldVal) {
+      if (!this.photoswipe) {
+        return
+      }
+      if (newVal.length && newVal.length - oldVal.length === -1) {
+        const index = this.photoswipe.getCurrentIndex()
+        this.photoswipe.invalidateCurrItems()
+        this.photoswipe.items.splice(index, 1)
+        let goToIndex = index
+        if (goToIndex > this.photoswipe.items.length - 1) {
+          goToIndex = 0
+        }
+        this.photoswipe.goTo(goToIndex)
+        this.photoswipe.updateSize(true)
+        this.photoswipe.ui.update()
+      } else if (!newVal.length) {
+        this.close()
+      }
+    }
+  }
+}
+</script>
+
+<style src="photoswipe/dist/photoswipe.css"></style>
+<style src="photoswipe/dist/default-skin/default-skin.css"></style>
+
+<style lang="stylus">
+.pswp
+  z-index 4000
+  .pswp__caption__center
+    text-align center
+  .pswp__item
+    video
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%, -50%)
+      background #363636
+</style>
